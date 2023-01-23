@@ -40,22 +40,13 @@ public class Track : MonoBehaviour
         lineRenderer.positionCount = vertices;
         lineRenderer.loop = true;
 
-        // create the path
         CreatePath();
-        DrawPath();
-
-        // add all children orbs to the orbs list
-        Orb[] childrenOrbs = GetComponentsInChildren<Orb>();
-        foreach (Orb orb in childrenOrbs)
-        {
-            orbs.Add(orb);
-        }
     }
-
 
     // Start is called before the first frame update
     void Start()
     {
+        RegisterOrbs();
     }
 
     void Update()
@@ -89,26 +80,36 @@ public class Track : MonoBehaviour
             positions.Add(position);
 
         }
+
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.useWorldSpace = true;
+        lineRenderer.SetPositions(positions.ToArray());
     
     }
 
-    void DrawPath()
+    public void RegisterOrbs()
     {
-        lineRenderer = GetComponent<LineRenderer>();
+        // get all orbs in the scene
+        Orb[] allOrbs = FindObjectsOfType<Orb>();
 
-        // loop through the positions
-        for (int i = 0; i < positions.Count; i++)
+        // loop through the orbs
+        for (int i = 0; i < allOrbs.Length; i++)
         {
-            // get the position
-            Vector3 position = positions[i];
+            // get the orb
+            Orb orb = allOrbs[i];
 
-            // get the next position
-            Vector3 nextPosition = positions[(i + 1) % positions.Count];
-
-            // draw a line between the positions
-            lineRenderer.SetPosition(i, position);
-            Debug.DrawLine(position, nextPosition, Color.white, 1000f);
+            // if the orb is on this path
+            if (orb.track == this)
+            {
+                // add the orb to the list
+                orbs.Add(orb);
+            }
         }
     }
 
+    // when position is changed in the editor, redraw the path
+    void OnDrawGizmosSelected()
+    {
+        CreatePath();
+    }
 }

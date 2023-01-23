@@ -6,20 +6,25 @@ public class Orb : MonoBehaviour
 {
 
     public Vector3 nextPosition;
-    public int nextPositionIndex;
+    public Vector3 previousPosition;
+    public int nextPositionIndex = -1;
     public Track track;
     public float distanceToNextPosition;
+    // add editor button to snap to path
+    [InspectorButton("SnapToPath")]
+    public bool snapToPath;
     
     void Awake(){
         // get track component which is the parent of the orb
-        UpdateNextPosition();
-
     }
 
-    void Start(){}
+    void Start(){
+        GetNextPosition();
+        // SnapToPath();
+    }
 
     void Update(){
-        if (GameManager.Instance.levelActive){
+        if (ButtonManager.Instance.levelActive){
             // get the current position as Vector2 with x and y
             Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
             // get the next position as Vector2 with x and y
@@ -46,7 +51,7 @@ public class Orb : MonoBehaviour
         // if the orb hits another orb, end the level
         if (collision.gameObject.tag == "Orb"){
             // end the level
-            GameManager.Instance.EndLevel();
+            // GameManager.Instance.EndLevel();
         }
     }
 
@@ -60,10 +65,42 @@ public class Orb : MonoBehaviour
         }
     }
 
+    void GetNextPosition(){
+        List<Vector3> closestPositions = GetTwoClosestPositions();
+        Vector3 closestPosition = closestPositions[0];
+        Vector3 secondClosestPosition = closestPositions[1];
+        int closestPositionIndex = track.positions.IndexOf(closestPosition);
+        int secondClosestPositionIndex = track.positions.IndexOf(secondClosestPosition);
+
+        // if one index is last and the other is first, set the next position to the first index
+        if (closestPositionIndex == track.positions.Count - 1 && secondClosestPositionIndex == 0){
+            nextPositionIndex = 0;
+            nextPosition = track.positions[nextPositionIndex];
+            previousPosition = track.positions[track.positions.Count - 1];
+        }
+        else if (secondClosestPositionIndex == track.positions.Count - 1 && closestPositionIndex == 0){
+            nextPositionIndex = 0;
+            nextPosition = track.positions[nextPositionIndex];
+            previousPosition = track.positions[track.positions.Count - 1];
+        } else {
+            // if the closest position index is less than the second closest position index
+            if (closestPositionIndex < secondClosestPositionIndex){
+                // set the next position index to the second closest position index
+                nextPositionIndex = secondClosestPositionIndex;
+                nextPosition = secondClosestPosition;
+                previousPosition = closestPosition;
+            } else {
+                // set the next position index to the closest position index
+                nextPositionIndex = closestPositionIndex;
+                nextPosition = closestPosition;
+                previousPosition = secondClosestPosition;
+            }
+        }
+    }
+
     void UpdateNextPosition(){
         // update the next position index
         nextPositionIndex++;
-        track = GetComponentInParent<Track>() as Track;
         // if the next position index is greater than the number of positions in the track
         if (nextPositionIndex >= track.positions.Count){
             // set the next position index to 0
@@ -72,7 +109,7 @@ public class Orb : MonoBehaviour
         // set the next position
         nextPosition = track.positions[nextPositionIndex];
         // set the z position to -2
-        nextPosition.z = Constants.OrbZPosition;
+        // nextPosition.z = Constants.OrbZPosition;
     }
 
     Vector3 ClosestPointOnLine(){
@@ -105,7 +142,6 @@ public class Orb : MonoBehaviour
     List<Vector3> GetTwoClosestPositions(){
         // create a list of the two closest positions
         List<Vector3> closestPositions = new List<Vector3>();
-
         // smallest distance
         float smallestDistance = Mathf.Infinity;
         // second smallest distance
@@ -115,8 +151,6 @@ public class Orb : MonoBehaviour
         Vector3 closestPosition = Vector3.zero;
         // second closest position
         Vector3 secondClosestPosition = Vector3.zero;
-
-        track = GetComponentInParent<Track>() as Track;
 
         // loop through the positions
         for (int i = 0; i < track.positions.Count; i++){
@@ -156,6 +190,13 @@ public class Orb : MonoBehaviour
 
     // snap the orb to the path when the orb is moved on the scene editor
     void OnDrawGizmosSelected(){
-        SnapToPath();
+        GetNextPosition();
+        Debug.DrawLine(transform.position, nextPosition, Color.red);
+        Debug.DrawLine(transform.position, ClosestPointOnLine(), Color.green);
+    }
+
+    void OnValidate(){
+        // SnapToPath();
+        // UpdateNextPosition();
     }
 }
