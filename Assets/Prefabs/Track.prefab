@@ -46,13 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vertices: 3
-  radius: 4
+  faceWidth: 1
   speed: 2
   orbs: []
   positions:
-  - {x: 13.73, y: 15.72, z: -2}
-  - {x: 7.729999, y: 19.184101, z: -2}
-  - {x: 7.7299995, y: 12.255898, z: -2}
+  - {x: 9.73, y: 16.720001, z: -1}
+  - {x: 8.863975, y: 15.22, z: -1}
+  - {x: 10.596025, y: 15.22, z: -1}
   snap: 1
   isClockwise: 1
 --- !u!120 &5674330090199264348
@@ -97,9 +97,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 13.73, y: 15.72, z: -2}
-  - {x: 7.729999, y: 19.184101, z: -2}
-  - {x: 7.7299995, y: 12.255898, z: -2}
+  - {x: 9.73, y: 16.720001, z: -1}
+  - {x: 8.863975, y: 15.22, z: -1}
+  - {x: 10.596025, y: 15.22, z: -1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

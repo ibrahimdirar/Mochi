@@ -8,7 +8,7 @@ public class Track : MonoBehaviour
     public int vertices = 3;
 
     // radius of the shape
-    public float radius = 1f;
+    public float faceWidth = 1f;
 
     // speed of the object on this path
     public float speed = 5f;
@@ -30,17 +30,17 @@ public class Track : MonoBehaviour
     // make path editable in the editor
     void Awake()
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        // set linerender size to number of vertices
-        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = Color.white;
-        lineRenderer.endColor = Color.white;
-        lineRenderer.startWidth = 0.02f;
-        lineRenderer.endWidth = 0.02f;
-        lineRenderer.positionCount = vertices;
-        lineRenderer.loop = true;
+        // lineRenderer = GetComponent<LineRenderer>();
+        // // set linerender size to number of vertices
+        // lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        // lineRenderer.startColor = Color.white;
+        // lineRenderer.endColor = Color.white;
+        // lineRenderer.startWidth = 0.02f;
+        // lineRenderer.endWidth = 0.02f;
+        // lineRenderer.positionCount = vertices;
+        // lineRenderer.loop = true;
 
-        CreatePath();
+        // // CreatePath();
     }
 
     // Start is called before the first frame update
@@ -54,38 +54,33 @@ public class Track : MonoBehaviour
     }
 
 
-    void CreatePath()
-    {
-        // clear the positions list
-        positions.Clear();
+    // void CreatePath()
+    // {
+    //     // clear the positions list
+    //     positions.Clear();
 
-        // calculate the angle between each vertex
-        float angle = 360f / vertices * (isClockwise ? 1 : -1);
+    //     // calculate the angle between each vertex
+    //     float angle = 360f / vertices * (isClockwise ? 1 : -1);
 
-        // loop through the vertices
-        for (int i = 0; i < vertices; i++)
-        {
-            // calculate the vertex position
-            Vector3 position = Quaternion.AngleAxis(angle * i, Vector3.forward) * Vector3.right * radius;
+    //     // loop through the vertices
+    //     for (int i = 0; i < vertices; i++)
+    //     {
+    //         Vector3 position = Vector3.zero;
+    //         position = Quaternion.Euler(0, 0, angle * i) * Vector3.up * faceWidth;
+    //         position += transform.position;
+    //         // apply transform rotation to position
+    //         position = transform.rotation * position;
+    //         // add position to list
+    //         positions.Add(position);
 
-            // rotate the position around the transform's position
-            position = Quaternion.AngleAxis(transform.eulerAngles.z, Vector3.forward) * position;
-            // shift the postion by the transform's position
-            position += transform.position;
+    //     }
 
-            // set position z to -1
-            position.z = Constants.OrbZPosition;
-
-            // add the position to the list
-            positions.Add(position);
-
-        }
-
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.useWorldSpace = true;
-        lineRenderer.SetPositions(positions.ToArray());
+    //     lineRenderer = GetComponent<LineRenderer>();
+    //     lineRenderer.positionCount = positions.Count;
+    //     lineRenderer.useWorldSpace = true;
+    //     lineRenderer.SetPositions(positions.ToArray());
     
-    }
+    // }
 
     public void RegisterOrbs()
     {
@@ -107,9 +102,14 @@ public class Track : MonoBehaviour
         }
     }
 
-    // when position is changed in the editor, redraw the path
-    void OnDrawGizmosSelected()
-    {
-        CreatePath();
-    }
+    // // when position is changed in the editor, redraw the path
+    // void OnDrawGizmosSelected()
+    // {
+    //     CreatePath();
+    // }
+
+    // void OnValidate()
+    // {
+    //     CreatePath();
+    // }
 }
