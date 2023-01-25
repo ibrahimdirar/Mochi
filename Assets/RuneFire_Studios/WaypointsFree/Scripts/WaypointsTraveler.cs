@@ -15,7 +15,7 @@ namespace WaypointsFree
         public WaypointsGroup Waypoints = null;
 
         [Tooltip("Movement and look-at constraints.")]
-        public PositionConstraint XYZConstraint = PositionConstraint.XYZ;
+        public PositionConstraint XYZConstraint = PositionConstraint.XY;
 
 
         [Tooltip("Auto-start movement if true.")]
@@ -32,7 +32,7 @@ namespace WaypointsFree
 
         
         [Tooltip("Immediately move starting position to postion at StartIndex.")]
-        public bool AutoPositionAtStart = true;
+        public bool AutoPositionAtStart = false;
 
         [Tooltip("Initial direction of travel through the positions list.")]
         public TravelDirection StartTravelDirection = TravelDirection.FORWARD;
@@ -121,7 +121,7 @@ namespace WaypointsFree
             isMoving = tf;
         }
 
-        private void Awake()
+        public void Awake()
         {
             if (Waypoints != null)
             {

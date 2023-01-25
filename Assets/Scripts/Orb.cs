@@ -12,8 +12,6 @@ public class Orb : MonoBehaviour
     public Track track;
     // public float distanceToNextPosition;
     // // add editor button to snap to path
-    // [InspectorButton("SnapToPath")]
-    // public bool snapToPath;
     
     // void Awake(){
     //     // get track component which is the parent of the orb
@@ -21,6 +19,7 @@ public class Orb : MonoBehaviour
 
 
     void Start(){
+        // set waypoints group to parent
     }
 
     void Update(){

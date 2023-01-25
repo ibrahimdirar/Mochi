@@ -11,6 +11,12 @@ namespace WaypointsFree
         public List<Waypoint> waypoints;   // The waypoint components controlled by this WaypointsGroupl IMMEDIATE children only
         private LineRenderer lineRenderer;
 
+        public int vertices = 4;
+        public int radius = 1;
+
+        [InspectorButton("GenerateVertices")]
+        public bool generateVertices;
+
         private void Awake()
         {
             if(waypoints != null)
@@ -33,12 +39,26 @@ namespace WaypointsFree
         // Start is called before the first frame update
         void Start()
         {
-
+            Draw();
         }
 
         // Update is called once per frame
         void Update()
         {
+            // Draw();
+        }
+
+        void GenerateVertices(){
+            waypoints = new List<Waypoint>();
+            for (int i = 0; i < vertices; i++)
+            {
+                Waypoint wp = new Waypoint();
+                Vector3 vertex = new Vector3(Mathf.Cos(i * 2 * Mathf.PI / vertices), Mathf.Sin(i * 2 * Mathf.PI / vertices), 0);
+                vertex *= radius;
+                vertex += transform.position;
+                wp.UpdatePosition(vertex, PositionConstraint.XY);
+                AddWaypoint(wp, i);
+            }
             Draw();
         }
 
