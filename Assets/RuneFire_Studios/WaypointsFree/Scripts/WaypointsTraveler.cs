@@ -11,6 +11,10 @@ namespace WaypointsFree
     /// </summary>
     public class WaypointsTraveler : MonoBehaviour
     {
+
+        [InspectorButton("SnapToWaypoint")]
+        public bool snapToWaypoint;
+        
         [Tooltip("WaypointsGroup gameobject containing the waypoints to travel.")]
         public WaypointsGroup Waypoints = null;
 
@@ -52,7 +56,7 @@ namespace WaypointsFree
         delegate bool MovementFunction ();
         MovementFunction moveFunc = null;
 
-        public AudioSource waypointSound = null;
+        public AudioClip waypointSound = null;
         
 
 
@@ -79,7 +83,10 @@ namespace WaypointsFree
         float moveSpeedOriginal = 0;
         float lookAtSpeedOriginal = 0;
 
-
+        void SnapToWaypoint()
+        {
+            StartAtIndex(StartIndex, AutoPositionAtStart);
+        }
 
         public void ResetTraveler()
         {
@@ -147,7 +154,7 @@ namespace WaypointsFree
                 {
                     if (waypointSound != null)
                     {
-                        waypointSound.Play();
+                        AudioSource.PlayClipAtPoint(waypointSound, Camera.main.transform.position);
                     }
                     SetNextPosition();
                 }

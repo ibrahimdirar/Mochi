@@ -1,37 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using WaypointsFree;
 
 public class Spawner : MonoBehaviour
 {
 
-    public GameObject orbPrefab;
-    public GameObject orbParent;
     public int orbCount = 1;
     public int StartAtIndex = 0;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    void OnMouseDown()
+    public void CreateOrb(GameObject orbPrefab, Material orbMaterial, AudioClip orbAudioClip)
     {
+        Debug.Log("CreateOrb");
          if (orbCount > 0)
         {
-            // if user clicks on this object
-            if(Input.GetMouseButtonDown(0)) 
-            {
-                // spawn orb
-                GameObject orb = Instantiate(orbPrefab, transform.position, Quaternion.identity);
-                orb.transform.parent = orbParent.transform;
-                orb.GetComponent<WaypointsTraveler>().Waypoints = orbParent.GetComponent<WaypointsGroup>();
-                orb.GetComponent<WaypointsTraveler>().StartIndex = StartAtIndex;
-                orb.GetComponent<WaypointsTraveler>().Awake();
-                orbCount--;
-            }
+            // spawn orb
+            GameObject orb = Instantiate(orbPrefab, transform.position, Quaternion.identity);
+            orb.GetComponent<WaypointsTraveler>().waypointSound = orbAudioClip;
+            orb.GetComponent<MeshRenderer>().material = orbMaterial;
+            // set orb parent to parent of spawner
+            orb.transform.parent = transform.parent;
+            orb.GetComponent<WaypointsTraveler>().Waypoints = transform.parent.GetComponent<WaypointsGroup>();
+            orb.GetComponent<WaypointsTraveler>().StartIndex = StartAtIndex;
+            orb.GetComponent<WaypointsTraveler>().Awake();
+            orbCount--;
         }
     }
 
