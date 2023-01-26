@@ -38,8 +38,9 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if orbcount greater than 0
-       
+    //    set material color to orb selector manager active color
+       GetComponent<MeshRenderer>().material = GameObject.Find("OrbSelectorManager").GetComponent<OrbSelectorManager>().activeOrbParamaters.orbMaterial;
+
     }
 
 }
