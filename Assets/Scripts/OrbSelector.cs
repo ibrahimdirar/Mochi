@@ -12,33 +12,14 @@ public class OrbSelector : MonoBehaviour
     public Material orbMaterial;
 
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        // get button
-        // Button button = GetComponent<Button>();
-        // add listener
-        GetComponent<Button>().onClick.AddListener(SetActiveOrbParamaters);
-        // set color to transparent
-        // this.color = new Color(1, 1, 1, 0);
-        // set shape of Graphic mesh to a circle
-
-    }
-
-
-    public void SetActiveOrbParamaters()
+    public void OnMouseDown()
     {
         Debug.Log("SetActiveOrbParamaters");
         // get orb selector manager
         // play orb audio clip at camera position
-        AudioSource.PlayClipAtPoint(orbAudioClip, Camera.main.transform.position);
+        // if level is not active
 
         OrbSelectorManager orbSelectorManager = GameObject.Find("OrbSelectorManager").GetComponent<OrbSelectorManager>();
-        // set active orb paramater
-        orbSelectorManager.activeOrbParamaters.orbPrefab = orbPrefab;
-        orbSelectorManager.activeOrbParamaters.orbAudioClip = orbAudioClip;
-        orbSelectorManager.activeOrbParamaters.orbMaterial = orbMaterial;
 
         // get selected track
         GameObject selectedTrack = orbSelectorManager.selectedTrack;

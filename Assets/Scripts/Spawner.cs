@@ -9,11 +9,20 @@ public class Spawner : MonoBehaviour
 
     public int orbCount = 1;
     public int StartAtIndex = 0;
+    TrackSettings trackSettings;
+    GameObject track;
 
+    void Awake()
+    {
+        trackSettings = transform.parent.GetComponent<TrackSettings>();
+
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        GameObject track = transform.parent.gameObject;
+        transform.position = track.GetComponent<WaypointsGroup>().waypoints[0].GetPosition();
 
     }
 
@@ -26,8 +35,21 @@ public class Spawner : MonoBehaviour
             GameObject orb = Instantiate(orbPrefab, transform.position, Quaternion.identity);
             orb.GetComponent<WaypointsTraveler>().waypointSound = orbAudioClip;
             orb.GetComponent<MeshRenderer>().material = orbMaterial;
-            // set orb parent to parent of spawner
-            orb.transform.parent = transform.parent;
+            // find orb group child object from parent
+            Transform orbGroupTransform = transform.parent.Find("Orbs");
+            GameObject orbGroup;
+
+            // if (orbGroupTransform == null) orbGroup = new GameObject("Orbs");
+            // else orbGroup = transform.parent.Find("Orbs").gameObject;
+            if (orbGroupTransform == null){
+            orbGroup = new GameObject("Orbs");
+            orbGroup.transform.SetParent(transform.parent);
+            }
+            else orbGroup = orbGroupTransform.gameObject;
+
+            // set orb parent to orb group
+            orb.transform.SetParent(orbGroup.transform);
+            orb.transform.localScale = new Vector3(40, 40, 40);
             orb.GetComponent<WaypointsTraveler>().Waypoints = transform.parent.GetComponent<WaypointsGroup>();
             orb.GetComponent<WaypointsTraveler>().StartIndex = StartAtIndex;
             orb.GetComponent<WaypointsTraveler>().Awake();
@@ -38,8 +60,12 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    //    set material color to orb selector manager active color
-       GetComponent<MeshRenderer>().material = GameObject.Find("OrbSelectorManager").GetComponent<OrbSelectorManager>().activeOrbParamaters.orbMaterial;
+        // toggle mesh renderer based on track settings
+        if (trackSettings.showOrbs) GetComponent<MeshRenderer>().enabled = true;
+        else GetComponent<MeshRenderer>().enabled = false;
+
+        GameObject track = transform.parent.gameObject;
+        transform.position = track.GetComponent<WaypointsGroup>().waypoints[0].GetPosition();
 
     }
 

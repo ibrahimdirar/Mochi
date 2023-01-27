@@ -60,7 +60,7 @@ namespace WaypointsFree
         
 
 
-        int positionIndex = -1; // Index of the next waypoint to move toward
+        public int positionIndex = -1; // Index of the next waypoint to move toward
         List<Waypoint> waypointsList; //Reference to the list of waypoints located in Waypoints 
 
 
@@ -76,8 +76,6 @@ namespace WaypointsFree
 
         bool isMoving = false; // Movement on/off
 
-
-
         Vector3 positionOriginal;
         Quaternion rotationOriginal;
         float moveSpeedOriginal = 0;
@@ -85,7 +83,7 @@ namespace WaypointsFree
 
         void SnapToWaypoint()
         {
-            StartAtIndex(StartIndex, AutoPositionAtStart);
+            transform.position = Waypoints.waypoints[StartIndex].GetPosition();
         }
 
         public void ResetTraveler()
@@ -105,6 +103,8 @@ namespace WaypointsFree
                 moveFunc = MoveLerpSimple;
             else if (StartingMovementType == MoveType.FORWARD_TRANSLATE)
                 moveFunc = MoveForwardToNext;
+            else if (StartingMovementType == MoveType.MOCHI)
+                moveFunc = MoveMochi;
 
         }
 
@@ -136,12 +136,11 @@ namespace WaypointsFree
             }
         }
 
+
         // Update is called once per frame
         void Update()
         {
-            if (ButtonManager.Instance.levelActive){
-                isMoving = true;
-            }
+            isMoving = transform.parent.parent.GetComponent<TrackSettings>().playTrack;
 
             if (isMoving == true && moveFunc != null)
             {
@@ -152,7 +151,7 @@ namespace WaypointsFree
 
                 if (arrivedAtDestination == true)
                 {
-                    if (waypointSound != null)
+                    if (waypointSound != null && positionIndex == 0) 
                     {
                         AudioSource.PlayClipAtPoint(waypointSound, Camera.main.transform.position);
                     }
@@ -308,6 +307,20 @@ namespace WaypointsFree
             distanceTraveled += Time.deltaTime * MoveSpeed;
             float fracAmount = distanceTraveled / distanceToNextWaypoint;
             transform.position = Vector3.Lerp(startPosition, destinationPosition, fracAmount);
+            // set LookAt speed to 0 if no rotation toward the destination is desired.
+            UpdateLookAtRotation();
+            return fracAmount >= 1;
+        }
+
+        bool MoveMochi()
+        {
+            if (MoveSpeed < 0)
+                MoveSpeed = 0;
+
+            timeTraveled += Time.deltaTime;
+            distanceTraveled += Time.deltaTime * MoveSpeed;
+            float fracAmount = distanceTraveled / distanceToNextWaypoint;
+            transform.position += (destinationPosition - startPosition).normalized * Time.deltaTime * MoveSpeed;
             // set LookAt speed to 0 if no rotation toward the destination is desired.
             UpdateLookAtRotation();
             return fracAmount >= 1;

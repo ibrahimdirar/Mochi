@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 namespace WaypointsFree
 {
+    [ExecuteInEditMode]
     public class WaypointsGroup : MonoBehaviour
     {
         public PositionConstraint XYZConstraint = PositionConstraint.XYZ;
@@ -27,8 +29,8 @@ namespace WaypointsFree
             lineRenderer = GetComponent<LineRenderer>();
             // set linerender size to number of vertices
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-            lineRenderer.startColor = Color.white;
-            lineRenderer.endColor = Color.white;
+            // lineRenderer.startColor = Color.white;
+            // lineRenderer.endColor = Color.white;
             lineRenderer.startWidth = 0.02f;
             lineRenderer.endWidth = 0.02f;
             lineRenderer.positionCount = 0;
@@ -39,13 +41,13 @@ namespace WaypointsFree
         // Start is called before the first frame update
         void Start()
         {
-            Draw();
+            GenerateVertices();
         }
 
         // Update is called once per frame
         void Update()
         {
-            // Draw();
+            Draw();
         }
 
         void GenerateVertices(){
@@ -55,7 +57,7 @@ namespace WaypointsFree
                 Waypoint wp = new Waypoint();
                 Vector3 vertex = new Vector3(Mathf.Cos(i * 2 * Mathf.PI / vertices), Mathf.Sin(i * 2 * Mathf.PI / vertices), 0);
                 vertex *= radius;
-                vertex += transform.position;
+                // vertex += transform.position;
                 wp.UpdatePosition(vertex, PositionConstraint.XY);
                 AddWaypoint(wp, i);
             }
@@ -67,7 +69,7 @@ namespace WaypointsFree
             lineRenderer.positionCount = waypoints.Count;
             for (int i = 0; i < waypoints.Count; i++)
             {
-                lineRenderer.SetPosition(i, waypoints[i].XY);
+                lineRenderer.SetPosition(i, waypoints[i].XY + transform.position);
             }
         }
 
@@ -101,5 +103,41 @@ namespace WaypointsFree
             wp.SetWaypointGroup(this);
         }
 
+        // number vertices by index on gizmos
+        void OnDrawGizmos()
+        {
+            if (waypoints == null) return;
+
+            // set label style of black font and white background with size 10 font
+            GUIStyle style = new GUIStyle();
+            style.normal.textColor = Color.black;
+            style.fontSize = 10;
+            style.fontStyle = FontStyle.Bold;
+            style.alignment = TextAnchor.MiddleCenter;
+            style.normal.background = Texture2D.whiteTexture;
+
+            for (int i = 0; i < waypoints.Count; i++)
+            {
+                UnityEditor.Handles.Label(waypoints[i].XY + transform.position, i.ToString(), style);
+            }
+
+        }
+        
+        // draw string on gizmos
+        void drawString(string text, Vector3 worldPos, Color? colour = null)
+        {
+            var restoreColor = GUI.color;
+            if (colour.HasValue) GUI.color = colour.Value;
+            var view = SceneView.currentDrawingSceneView;
+            if (view != null)
+            {
+                var screenPos = view.camera.WorldToScreenPoint(worldPos);
+                Handles.BeginGUI();
+                var size = GUI.skin.label.CalcSize(new GUIContent(text));
+                GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height + (size.y / 2), size.x, size.y), text);
+                Handles.EndGUI();
+            }
+        }
+     
     }
 }

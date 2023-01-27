@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SuperSelector;
 
 public class OrbSelectorManager : MonoBehaviour
 {
@@ -18,15 +19,6 @@ public class OrbSelectorManager : MonoBehaviour
 
     // create a list of orb prefab and audio clip pairs
     public List<OrbParamaters> orbParamaters;
-
-    // active OrbParamater
-    public OrbParamaters activeOrbParamaters;
-
-    void Start()
-    {
-        // set active orb paramater
-        activeOrbParamaters = orbParamaters[0];
-    }
 
 
 }
