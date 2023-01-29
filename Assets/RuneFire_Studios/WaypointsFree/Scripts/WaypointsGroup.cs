@@ -26,6 +26,13 @@ namespace WaypointsFree
                 foreach (Waypoint wp in waypoints)
                     wp.SetWaypointGroup(this);
             }
+        }
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            // if name of this object is "Track", then set gradient to blue
+            // if name of this object is "TargetTrack" the entire track is white
             lineRenderer = GetComponent<LineRenderer>();
             // set linerender size to number of vertices
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
@@ -36,21 +43,40 @@ namespace WaypointsFree
             lineRenderer.positionCount = 0;
             lineRenderer.useWorldSpace = true;
             lineRenderer.loop = true;
-        }
 
-        // Start is called before the first frame update
-        void Start()
-        {
+            if (name == "Track")
+            {
+                // set gradient to blue
+                float alpha = 1.0f;
+                Gradient gradient = new Gradient();
+                gradient.SetKeys(
+                    new GradientColorKey[] { new GradientColorKey(Color.blue, 0.0f), new GradientColorKey(Color.white, 1.0f/BeatManager.Instance.beatsPerSound) },
+                    new GradientAlphaKey[] { new GradientAlphaKey(alpha, 1.0f), new GradientAlphaKey(alpha, 1.0f) }
+                );
+                lineRenderer.colorGradient = gradient;
+            }
+            else if (name == "TargetTrack")
+            {
+                // set gradient to white
+                float alpha = 1.0f;
+                Gradient gradient = new Gradient();
+                gradient.SetKeys(
+                    new GradientColorKey[] { new GradientColorKey(Color.white, 0.0f), new GradientColorKey(Color.white, 1.0f) },
+                    new GradientAlphaKey[] { new GradientAlphaKey(alpha, 1.0f), new GradientAlphaKey(alpha, 1.0f) }
+                );
+                lineRenderer.colorGradient = gradient;
+            }
             GenerateVertices();
         }
 
         // Update is called once per frame
         void Update()
         {
-            Draw();
+            GenerateVertices();
         }
 
         void GenerateVertices(){
+            vertices = BeatManager.Instance.beatsPerSound;
             waypoints = new List<Waypoint>();
             for (int i = 0; i < vertices; i++)
             {

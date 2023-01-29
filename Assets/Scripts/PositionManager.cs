@@ -12,7 +12,7 @@ public class PositionManager : MonoBehaviour
     public int screenHeight;
 
     void Position(){
-        trackCollection = GameObject.Find("Canvas/Tracks");
+        trackCollection = GameObject.Find("GameObjects/Tracks");
         tracks = new List<GameObject>();
         for (int i = 0; i < trackCollection.transform.childCount; i++){
             tracks.Add(trackCollection.transform.GetChild(i).gameObject);

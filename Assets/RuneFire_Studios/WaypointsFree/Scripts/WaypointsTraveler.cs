@@ -15,38 +15,17 @@ namespace WaypointsFree
         [InspectorButton("SnapToWaypoint")]
         public bool snapToWaypoint;
         
-        [Tooltip("WaypointsGroup gameobject containing the waypoints to travel.")]
         public WaypointsGroup Waypoints = null;
-
-        [Tooltip("Movement and look-at constraints.")]
         public PositionConstraint XYZConstraint = PositionConstraint.XY;
-
-
-        [Tooltip("Auto-start movement if true.")]
         public bool AutoStart = false;
-
-        //[Range(0,float.MaxValue)]
         public float MoveSpeed = 5.0f;
-
-        //[Range(0, float.MaxValue)]
         public float LookAtSpeed = 3.0f;
-
-        [Tooltip("Starts movement from the position vector at this index. Dependent upon StartTravelDirection!")]
         public int StartIndex = 0;
-
-        
-        [Tooltip("Immediately move starting position to postion at StartIndex.")]
         public bool AutoPositionAtStart = false;
-
-        [Tooltip("Initial direction of travel through the positions list.")]
         public TravelDirection StartTravelDirection = TravelDirection.FORWARD;
-
-        [Tooltip("Movement behavior to apply when last postion reached.")]
         public EndpointBehavior EndReachedBehavior = EndpointBehavior.LOOP;
-
-        [Tooltip("Movement function type")]
         public MoveType StartingMovementType = MoveType.LERP;
-
+        public AudioClip waypointSound = null;
 
         public bool IsMoving
         {
@@ -56,15 +35,11 @@ namespace WaypointsFree
         delegate bool MovementFunction ();
         MovementFunction moveFunc = null;
 
-        public AudioClip waypointSound = null;
-        
-
 
         public int positionIndex = -1; // Index of the next waypoint to move toward
-        List<Waypoint> waypointsList; //Reference to the list of waypoints located in Waypoints 
+        public List<Waypoint> waypointsList; //Reference to the list of waypoints located in Waypoints 
 
-
-        Vector3 nextPosition; // The next position to travel to.
+        Vector3 nextPosition; 
         Vector3 startPosition;
         Vector3 destinationPosition;
 
@@ -94,7 +69,6 @@ namespace WaypointsFree
             MoveSpeed = moveSpeedOriginal;
             LookAtSpeed = lookAtSpeedOriginal;
 
-
             StartAtIndex(StartIndex, AutoPositionAtStart);
             SetNextPosition();
             travelIndexCounter = StartTravelDirection == TravelDirection.REVERSE ? -1 : 1;
@@ -105,10 +79,12 @@ namespace WaypointsFree
                 moveFunc = MoveForwardToNext;
             else if (StartingMovementType == MoveType.MOCHI)
                 moveFunc = MoveMochi;
+            else if (StartingMovementType == MoveType.BEATLERP)
+                moveFunc = BeatLerp;
+
 
         }
 
-        // Start is called before the first frame update
         void Start()
         {
             moveSpeedOriginal = MoveSpeed;
@@ -128,7 +104,7 @@ namespace WaypointsFree
             isMoving = tf;
         }
 
-        public void Awake()
+        void Awake()
         {
             if (Waypoints != null)
             {
@@ -312,18 +288,43 @@ namespace WaypointsFree
             return fracAmount >= 1;
         }
 
-        bool MoveMochi()
+        public float beatProgress = 0;
+        public Vector3 beatPosition = Vector3.zero;
+        public int beatIndex = 0;
+
+        bool BeatLerp()
         {
             if (MoveSpeed < 0)
                 MoveSpeed = 0;
 
-            timeTraveled += Time.deltaTime;
-            distanceTraveled += Time.deltaTime * MoveSpeed;
-            float fracAmount = distanceTraveled / distanceToNextWaypoint;
+            // beat progress since last frame
+            float frac = beatProgress - Mathf.Floor(beatProgress);
+
+            beatProgress = BeatManager.Instance.beatProgress;
+            beatPosition = Vector3.Lerp(startPosition, destinationPosition, frac);
+            transform.position = beatPosition;
+            // set LookAt speed to 0 if no rotation toward the destination is desired.
+            UpdateLookAtRotation();
+   
+            // split beatProgress into int and fraction
+            if ((int)beatProgress != beatIndex)
+            {
+                beatIndex = (int)beatProgress;
+                return true;
+            }
+            return false;
+        }
+
+        bool MoveMochi()
+        {
+            if (MoveSpeed < 0)
+                MoveSpeed = 0;
+        
+
             transform.position += (destinationPosition - startPosition).normalized * Time.deltaTime * MoveSpeed;
             // set LookAt speed to 0 if no rotation toward the destination is desired.
             UpdateLookAtRotation();
-            return fracAmount >= 1;
+            return Vector3.Distance(transform.position, destinationPosition) < 0.1f;
         }
 
         /// <summary>

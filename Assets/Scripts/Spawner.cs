@@ -7,14 +7,23 @@ using WaypointsFree;
 public class Spawner : MonoBehaviour
 {
 
-    public int orbCount = 1;
     public int StartAtIndex = 0;
     TrackSettings trackSettings;
     GameObject track;
+    public List<GameObject> orbs = new List<GameObject>();
 
     void Awake()
     {
         trackSettings = transform.parent.GetComponent<TrackSettings>();
+        // set orb count to beat manager beats per sound
+        track = transform.parent.gameObject;
+        transform.position = track.GetComponent<WaypointsGroup>().waypoints[0].GetPosition();
+
+        // initialise orbs with None (GameObject) for each beat
+        for (int i = 0; i < BeatManager.Instance.beatsPerSound; i++)
+        {
+            orbs.Add(null);
+        }
 
     }
 
@@ -29,43 +38,41 @@ public class Spawner : MonoBehaviour
     public void CreateOrb(GameObject orbPrefab, Material orbMaterial, AudioClip orbAudioClip)
     {
         Debug.Log("CreateOrb");
-         if (orbCount > 0)
-        {
-            // spawn orb
-            GameObject orb = Instantiate(orbPrefab, transform.position, Quaternion.identity);
-            orb.GetComponent<WaypointsTraveler>().waypointSound = orbAudioClip;
-            orb.GetComponent<MeshRenderer>().material = orbMaterial;
-            // find orb group child object from parent
-            Transform orbGroupTransform = transform.parent.Find("Orbs");
-            GameObject orbGroup;
+        // spawn orb
+        GameObject orb = Instantiate(orbPrefab, transform.position, Quaternion.identity);
+        Destroy(orbs[BeatManager.Instance.currentBeat]);
+        orbs[BeatManager.Instance.currentBeat] = orb;
+        orb.GetComponent<WaypointsTraveler>().waypointSound = orbAudioClip;
+        orb.GetComponent<MeshRenderer>().material = orbMaterial;
+        // find orb group child object from parent
+        Transform orbGroupTransform = transform.parent.Find("Orbs");
+        GameObject orbGroup;
 
-            // if (orbGroupTransform == null) orbGroup = new GameObject("Orbs");
-            // else orbGroup = transform.parent.Find("Orbs").gameObject;
-            if (orbGroupTransform == null){
-            orbGroup = new GameObject("Orbs");
-            orbGroup.transform.SetParent(transform.parent);
-            }
-            else orbGroup = orbGroupTransform.gameObject;
-
-            // set orb parent to orb group
-            orb.transform.SetParent(orbGroup.transform);
-            orb.transform.localScale = new Vector3(40, 40, 40);
-            orb.GetComponent<WaypointsTraveler>().Waypoints = transform.parent.GetComponent<WaypointsGroup>();
-            orb.GetComponent<WaypointsTraveler>().StartIndex = StartAtIndex;
-            orb.GetComponent<WaypointsTraveler>().Awake();
-            orbCount--;
+        // if (orbGroupTransform == null) orbGroup = new GameObject("Orbs");
+        // else orbGroup = transform.parent.Find("Orbs").gameObject;
+        if (orbGroupTransform == null){
+        orbGroup = new GameObject("Orbs");
+        orbGroup.transform.SetParent(transform.parent);
         }
+        else orbGroup = orbGroupTransform.gameObject;
+
+        // set orb parent to orb group
+        orb.transform.SetParent(orbGroup.transform);
+        orb.transform.localScale = new Vector3(40, 40, 40);
+        orb.GetComponent<WaypointsTraveler>().Waypoints = transform.parent.GetComponent<WaypointsGroup>();
+        orb.GetComponent<WaypointsTraveler>().StartIndex = StartAtIndex;
     }
 
     // Update is called once per frame
     void Update()
     {
         // toggle mesh renderer based on track settings
-        if (trackSettings.showOrbs) GetComponent<MeshRenderer>().enabled = true;
-        else GetComponent<MeshRenderer>().enabled = false;
+        // if (trackSettings.showOrbs) GetComponent<MeshRenderer>().enabled = true;
+        // else GetComponent<MeshRenderer>().enabled = false;
 
         GameObject track = transform.parent.gameObject;
         transform.position = track.GetComponent<WaypointsGroup>().waypoints[0].GetPosition();
+        
 
     }
 

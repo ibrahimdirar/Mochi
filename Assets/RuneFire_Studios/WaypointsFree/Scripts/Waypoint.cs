@@ -31,6 +31,7 @@ namespace WaypointsFree
         LERP,                   // Uses the MoveLerpSimple function to update transform position
         FORWARD_TRANSLATE,       // uses MoveForwardToNext function to translate position - ROTATION DEPENDENT!
         MOCHI,                  // uses MoveMochi function to update transform position
+        BEATLERP,                  // uses MoveMochi function to update transform position
     }
 
 

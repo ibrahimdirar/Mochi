@@ -6,17 +6,11 @@ public class Orb : MonoBehaviour
 {
     public TrackSettings trackSettings;
 
-    void Awake(){
-    }
-
-    // Start is called before the first frame update
     void Start()
     {
         trackSettings = transform.parent.parent.GetComponent<TrackSettings>();
-        
     }
 
-    // Update is called once per frame
     void Update()
     {
         // toggle mesh renderer based on track settings
@@ -25,9 +19,6 @@ public class Orb : MonoBehaviour
     }
 
     void OnMouseDown() {
-        // add one orbcount back to active track spawner
-        OrbSelectorManager orbSelectorManager = GameObject.Find("OrbSelectorManager").GetComponent<OrbSelectorManager>();
-        orbSelectorManager.selectedTrack.GetComponentInChildren<Spawner>().orbCount += 1;
         Destroy(gameObject);
     }
 }
