@@ -75,10 +75,10 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -8.833333, y: -5, z: 0}
-  - {x: -10.833333, y: -3, z: 0}
-  - {x: -12.833333, y: -5, z: 0}
-  - {x: -10.833333, y: -7, z: 0}
+  - {x: 1, y: 0, z: 0}
+  - {x: -0.00000004371139, y: 1, z: 0}
+  - {x: -1, y: -0.00000008742278, z: 0}
+  - {x: 0.000000011924881, y: -1, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -108,7 +108,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0, g: 0, b: 1, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -117,14 +117,14 @@ LineRenderer:
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 65535
+      ctime1: 16384
       ctime2: 0
       ctime3: 0
       ctime4: 0
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 0
+      atime0: 65535
       atime1: 65535
       atime2: 0
       atime3: 0
@@ -152,31 +152,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1249690424196328008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c9625c5b7836584397b59b00907d6dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f41a0f026ed543018d104f33f8097bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XYZConstraint: 1
+  XYZConstraint: 0
   waypoints:
-  - position: {x: 2, y: 0, z: 0}
+  - position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    xyzPosition: {x: 2, y: 0, z: 0}
-    xyPosition: {x: 2, y: 0, z: 0}
-    xzPosition: {x: 2, y: 0, z: 0}
-  - position: {x: -0.00000008742278, y: 2, z: 0}
+    xyzPosition: {x: 1, y: 0, z: 0}
+    xyPosition: {x: 1, y: 0, z: 0}
+    xzPosition: {x: 1, y: 0, z: 0}
+  - position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    xyzPosition: {x: -0.00000008742278, y: 2, z: 0}
-    xyPosition: {x: -0.00000008742278, y: 2, z: 0}
-    xzPosition: {x: -0.00000008742278, y: 0, z: 0}
-  - position: {x: -2, y: -0.00000017484555, z: 0}
+    xyzPosition: {x: -0.00000004371139, y: 1, z: 0}
+    xyPosition: {x: -0.00000004371139, y: 1, z: 0}
+    xzPosition: {x: -0.00000004371139, y: 0, z: 0}
+  - position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    xyzPosition: {x: -2, y: -0.00000017484555, z: 0}
-    xyPosition: {x: -2, y: -0.00000017484555, z: 0}
-    xzPosition: {x: -2, y: 0, z: 0}
-  - position: {x: 0.000000023849761, y: -2, z: 0}
+    xyzPosition: {x: -1, y: -0.00000008742278, z: 0}
+    xyPosition: {x: -1, y: -0.00000008742278, z: 0}
+    xzPosition: {x: -1, y: 0, z: 0}
+  - position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
-    xyzPosition: {x: 0.000000023849761, y: -2, z: 0}
-    xyPosition: {x: 0.000000023849761, y: -2, z: 0}
-    xzPosition: {x: 0.000000023849761, y: 0, z: 0}
+    xyzPosition: {x: 0.000000011924881, y: -1, z: 0}
+    xyPosition: {x: 0.000000011924881, y: -1, z: 0}
+    xzPosition: {x: 0.000000011924881, y: 0, z: 0}
   vertices: 4
-  radius: 2
+  radius: 1
   generateVertices: 0

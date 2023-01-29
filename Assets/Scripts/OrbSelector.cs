@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
-using WaypointsFree;
 
 public class OrbSelector : MonoBehaviour
 {
@@ -18,10 +17,5 @@ public class OrbSelector : MonoBehaviour
 
         Spawner spawner = orbSelectorManager.selectedTrack.GetComponentInChildren<Spawner>();
         spawner.CreateOrb(orbPrefab, orbMaterial, orbAudioClip);
-    }
-
-    void Update()
-    {
-        
     }
 }

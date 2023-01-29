@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3109920009094939295}
   - component: {fileID: 3109920009094939282}
   - component: {fileID: 3109920009094939283}
-  - component: {fileID: 3109920009094939280}
   - component: {fileID: 7636882306115487729}
   - component: {fileID: 3047965657678966010}
   - component: {fileID: 7188211141398893916}
@@ -33,8 +32,8 @@ RectTransform:
   m_GameObject: {fileID: 3109920009094939293}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1.9999269}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -42,7 +41,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 75, y: 75}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3109920009094939281
 CanvasRenderer:
@@ -115,7 +114,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3109920009094939293}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3109920009094939283
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -158,24 +157,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3109920009094939280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3109920009094939293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62ff24650fc34d14be5d3ec6095beb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _circleData:
-    _radius: 50
-    _completion: 360
-    _angle: 0
-    _polygonQuantity: 32
-    _keepPolygonQuantityConsistent: 1
 --- !u!114 &7636882306115487729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,4 +204,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 50
+  m_Radius: 0.5

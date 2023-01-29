@@ -22,7 +22,7 @@ PrefabInstance:
     - target: {fileID: 1471080023561166140, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 1471080023561166141, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -66,6 +66,22 @@ PrefabInstance:
     - target: {fileID: 1471080023561166141, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5579546589252057126, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5579546589252057126, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5579546589252057126, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5579546589252057126, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5645555146191737210, guid: e4ab0c0332db34332b3820c49b8942fe, type: 3}
       propertyPath: MoveSpeed
@@ -114,21 +130,3 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.8000002
---- !u!114 &267629639500039914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8000237930077398221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62ff24650fc34d14be5d3ec6095beb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _circleData:
-    _radius: 0.8
-    _completion: 360
-    _angle: 0
-    _polygonQuantity: 32
-    _keepPolygonQuantityConsistent: 1

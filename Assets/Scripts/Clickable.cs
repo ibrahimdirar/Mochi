@@ -6,5 +6,5 @@ using UnityEngine.UI;
 
 public class Clickable : Graphic
 {
-    public new Color color = new Color(1, 1, 1, 0);
+    public new Color color = new(1, 1, 1, 0);
 }
