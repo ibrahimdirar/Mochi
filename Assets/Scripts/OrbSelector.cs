@@ -13,9 +13,23 @@ public class OrbSelector : MonoBehaviour
 
     public void OnMouseDown()
     {
-        OrbSelectorManager orbSelectorManager = GameObject.Find("OrbSelectorManager").GetComponent<OrbSelectorManager>();
+        GameObject orbGroup = GameObject.Find("GameObjects/Tracks/Track");
+        GameObject targetTrack = GameObject.Find("GameObjects/Tracks/TargetTrack");
+        targetTrack.GetComponent<TrackSettings>().playTrack = false;
 
-        Spawner spawner = orbSelectorManager.selectedTrack.GetComponentInChildren<Spawner>();
-        spawner.CreateOrb(orbPrefab, orbMaterial, orbAudioClip);
+
+        foreach (Transform orb in orbGroup.transform)
+        {
+            if (orb.gameObject.GetComponent<WaypointsTraveler>().positionIndex == 0)
+            {
+                orb.gameObject.GetComponent<MeshRenderer>().material = orbMaterial;
+                // if orbAudioClip is null, use None (AudioClip)
+                if (orbAudioClip == null) orbAudioClip = (AudioClip)Resources.Load("None");
+                orb.gameObject.GetComponent<WaypointsTraveler>().waypointSound = orbAudioClip;
+                // break out for loop
+                break;
+            }
+        }
     }
+
 }
