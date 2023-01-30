@@ -8,7 +8,7 @@ public class Orb : MonoBehaviour
 
     void Start()
     {
-        trackSettings = transform.parent.parent.GetComponent<TrackSettings>();
+        trackSettings = transform.parent.GetComponent<TrackSettings>();
     }
 
     void Update()
@@ -18,7 +18,4 @@ public class Orb : MonoBehaviour
         else GetComponent<MeshRenderer>().enabled = false;
     }
 
-    void OnMouseDown() {
-        Destroy(gameObject);
-    }
 }

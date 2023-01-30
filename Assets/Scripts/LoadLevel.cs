@@ -10,6 +10,6 @@ public class LoadLevel : MonoBehaviour
 
     public void OnMouseDown()
     {
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 }

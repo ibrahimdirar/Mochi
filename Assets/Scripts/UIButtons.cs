@@ -7,6 +7,26 @@ using UnityEngine.UI;
 public class UIButtons : MonoBehaviour
 {
 
+    GameObject targetTrack;
+    GameObject track;
+
+    public int currentSceneIndex;
+    public int nextSceneIndex;
+    public string nextSceneName;
+    void Start()
+    {
+        targetTrack = GameObject.Find("GameObjects/Tracks/TargetTrack");
+        track = GameObject.Find("GameObjects/Tracks/Track");
+
+
+        // get the current scene index
+        currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        // get the next scene index
+        nextSceneIndex = currentSceneIndex + 1;
+        // get the next scene name
+        nextSceneName = SceneManager.GetSceneByBuildIndex(nextSceneIndex).name;
+
+    }
 
     public void Exit()
     {
@@ -15,18 +35,25 @@ public class UIButtons : MonoBehaviour
         SceneManager.LoadScene("LevelSelect");
     }
 
-    public void Reveal()
-    {
-        Debug.Log("reveal Button Pressed");
-        // load this level
-        GameObject.Find("TargetTrack").GetComponent<TrackSettings>().showOrbs = true;
-
-    }
-
     public void Reset()
     {
         Debug.Log("Level Select Button Pressed");
         // load this level
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // for every orb in the track, set the material and audio clip to the default
+        // get teh default material from orb selector manager
+        Material defaultMaterial = GameObject.Find("OrbSelectorManager").GetComponent<OrbSelectorManager>().defaultMaterial;
+        foreach (Transform orb in track.transform)
+        {
+            orb.gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
+            orb.gameObject.GetComponent<WaypointsTraveler>().waypointSound = (AudioClip)Resources.Load("None");
+        }
+        targetTrack.GetComponent<TrackSettings>().playTrack = true;
+
+    }
+
+
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Single);
     }
 }

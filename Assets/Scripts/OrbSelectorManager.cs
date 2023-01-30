@@ -15,6 +15,7 @@ public class OrbSelectorManager : MonoBehaviour
         public Material orbMaterial;
     }
 
+    public Material defaultMaterial;
     public GameObject selectedTrack;
 
     // create a list of orb prefab and audio clip pairs
